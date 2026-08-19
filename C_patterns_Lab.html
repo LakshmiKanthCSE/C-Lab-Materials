@@ -1,0 +1,2656 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>C Pattern Lab</title>
+
+<style>
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #f3f4f6;
+    color: #222;
+}
+
+header {
+    background: #1f2937;
+    color: white;
+    text-align: center;
+    padding: 25px;
+}
+
+header h1 {
+    margin: 0;
+}
+
+header p {
+    margin: 8px 0 0;
+}
+
+.container {
+    max-width: 1200px;
+    margin: auto;
+    padding: 20px;
+}
+
+.card {
+    background: white;
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+.controls {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 15px;
+}
+
+.control {
+    display: flex;
+    flex-direction: column;
+}
+
+label {
+    font-weight: bold;
+    margin-bottom: 6px;
+}
+
+select,
+input,
+button {
+    padding: 10px;
+    font-size: 15px;
+    border-radius: 5px;
+    border: 1px solid #bbb;
+}
+
+button {
+    cursor: pointer;
+    background: #2563eb;
+    color: white;
+    border: none;
+}
+
+button:hover {
+    opacity: 0.9;
+}
+
+.buttons {
+    grid-column: 1 / -1;
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.reset {
+    background: #6b7280;
+}
+
+.copy {
+    background: #059669;
+}
+
+.challenge {
+    background: #7c3aed;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+pre {
+    background: #111827;
+    color: white;
+    padding: 20px;
+    border-radius: 8px;
+    min-height: 220px;
+    overflow-x: auto;
+    font-family: Consolas, monospace;
+    font-size: 16px;
+    line-height: 1.5;
+}
+
+.explanation {
+    background: #eff6ff;
+    border-left: 5px solid #2563eb;
+    padding: 15px;
+    line-height: 1.6;
+}
+
+.challenge-box {
+    background: #faf5ff;
+    border-left: 5px solid #7c3aed;
+    padding: 20px;
+}
+
+.challenge-code {
+    background: #111827;
+    color: white;
+    padding: 20px;
+    border-radius: 8px;
+    font-family: Consolas, monospace;
+    line-height: 1.6;
+    white-space: pre-wrap;
+}
+
+.answer-input {
+    width: 100%;
+    margin-top: 10px;
+    font-family: Consolas, monospace;
+}
+
+.result {
+    margin-top: 15px;
+    padding: 12px;
+    border-radius: 6px;
+    font-weight: bold;
+}
+
+.correct {
+    background: #dcfce7;
+    color: #166534;
+}
+
+.wrong {
+    background: #fee2e2;
+    color: #991b1b;
+}
+
+.hint {
+    background: #fef3c7;
+    color: #92400e;
+    padding: 12px;
+    margin-top: 12px;
+    border-radius: 6px;
+}
+
+.hidden {
+    display: none;
+}
+
+.score {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+@media(max-width:800px) {
+
+    .controls {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .grid {
+        grid-template-columns: 1fr;
+    }
+
+}
+
+@media(max-width:500px) {
+
+    .controls {
+        grid-template-columns: 1fr;
+    }
+
+}
+
+
+html {
+    scroll-behavior: smooth;
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<header>
+
+<h1>💻 C Lab - Patterns</h1>
+
+<p>Learn C Pattern Printing through Interactive session</p>
+
+</header>
+
+
+<div class="container">
+
+
+<!-- =====================================================
+     CONFIGURATION
+====================================================== -->
+
+<div class="card">
+
+<h2>⚙️ Pattern Configuration</h2>
+
+<div class="controls">
+
+
+<div class="control">
+
+<label>Level</label>
+
+<select id="level" onchange="loadPatterns()">
+
+<option value="1">
+Level 1 - Basic
+</option>
+
+<option value="2">
+Level 2 - Pyramid
+</option>
+
+<option value="3">
+Level 3 - Hollow & Shapes
+</option>
+
+<option value="4">
+Level 4 - Number Patterns
+</option>
+
+<option value="5">
+Level 5 - Challenging
+</option>
+
+</select>
+
+</div>
+
+
+<div class="control">
+
+<label>Pattern</label>
+
+<select id="pattern" onchange="generatePattern()">
+
+</select>
+
+</div>
+
+
+<div class="control">
+
+<label>Rows</label>
+
+<input
+type="number"
+id="rows"
+value="5"
+min="1"
+max="20"
+oninput="generatePattern()"
+>
+
+</div>
+
+
+<div class="control">
+
+<label>Symbol</label>
+
+<input
+type="text"
+id="symbol"
+value="*"
+maxlength="1"
+oninput="generatePattern()"
+>
+
+</div>
+
+
+<div class="control">
+
+<label>Starting Character</label>
+
+<input
+type="text"
+id="startChar"
+value="A"
+maxlength="1"
+oninput="generatePattern()"
+>
+
+</div>
+
+
+<div class="buttons">
+
+<button onclick="generatePattern()">
+Generate
+</button>
+
+<button class="reset" onclick="resetPage()">
+Reset
+</button>
+
+<button class="copy" onclick="copyCode()">
+Copy C Code
+</button>
+
+<button class="challenge" onclick="startPractice()">
+    💻 Student Practice
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+
+<!-- =====================================================
+     OUTPUT
+====================================================== -->
+
+<div class="grid">
+
+
+<div class="card">
+
+<h2>🖥️ Pattern Output</h2>
+
+<pre id="output"></pre>
+
+</div>
+
+
+<div class="card">
+
+<h2>💻 C Program</h2>
+
+<pre id="code"></pre>
+
+</div>
+
+</div>
+
+
+<!-- =====================================================
+     ASCII
+====================================================== -->
+
+<div class="card">
+
+<h2>🔤 ASCII Values</h2>
+
+<pre id="ascii"></pre>
+
+</div>
+
+
+<!-- =====================================================
+     LOGIC
+====================================================== -->
+
+<div class="card">
+
+<h2>🧠 Pattern Logic</h2>
+
+<div class="explanation" id="explanation"></div>
+
+</div>
+
+
+<!-- =====================================================
+     STUDENT CHALLENGE
+====================================================== -->
+
+<div class="card hidden" id="challengeCard">
+
+<h2>💻 Student Practice</h2>
+
+<div class="challenge-box">
+
+<p id="challengeQuestion"></p>
+
+<div class="score">
+Score: <span id="score">0</span>
+</div>
+
+<br>
+
+<div
+id="challengeCode"
+class="challenge-code">
+</div>
+
+<label>
+Enter the missing expression:
+</label>
+
+<input
+type="text"
+id="answerInput"
+class="answer-input"
+placeholder="Example: i"
+>
+
+<br><br>
+
+<button onclick="checkAnswer()">
+✅ Check Answer
+</button>
+
+<button
+class="reset"
+onclick="showHint()">
+💡 Hint
+</button>
+
+<button
+class="challenge"
+onclick="nextChallenge()">
+➡️ Next Question
+</button>
+
+<div id="result"></div>
+
+<div
+id="hint"
+class="hint hidden">
+</div>
+
+</div>
+
+</div>
+
+
+</div>
+
+
+<script>
+
+
+/* =====================================================
+   PATTERNS
+===================================================== */
+
+
+const patterns = {
+
+1: [
+
+["Right-Angled Star", "rightStar"],
+
+["Inverted Star", "invertedStar"],
+
+["Number Triangle", "numberTriangle"],
+
+["Repeated Number", "repeatedNumber"],
+
+["Alphabet Triangle", "alphabetTriangle"],
+
+["Repeated Alphabet", "repeatedAlphabet"]
+
+],
+
+2: [
+
+["Right-Aligned Star", "rightAligned"],
+
+["Inverted Right-Aligned", "invertedRightAligned"],
+
+["Full Pyramid", "pyramid"],
+
+["Inverted Pyramid", "invertedPyramid"],
+
+["Number Pyramid", "numberPyramid"],
+
+["Repeated Number Pyramid", "repeatedNumberPyramid"]
+
+],
+
+3: [
+
+["Diamond", "diamond"],
+
+["Hollow Square", "hollowSquare"],
+
+["Hollow Triangle", "hollowTriangle"],
+
+["Hollow Pyramid", "hollowPyramid"],
+
+["X Pattern", "xPattern"],
+
+["Plus Pattern", "plusPattern"]
+
+],
+
+4: [
+
+["Continuous Number Triangle", "continuousNumber"],
+
+["Floyd's Triangle", "floyd"],
+
+["Reverse Number Pattern", "reverseNumber"],
+
+["Palindrome Number Pyramid", "palindrome"],
+
+["Repeated Digit Pyramid", "repeatedDigitPyramid"]
+
+],
+
+5: [
+
+["Butterfly Pattern", "butterfly"],
+
+["Hollow Diamond", "hollowDiamond"],
+
+["Pascal's Triangle", "pascal"],
+
+["Alternating 0-1", "zeroOne"],
+
+["Checkerboard", "checkerboard"],
+
+["Sandglass", "sandglass"],
+
+["Hourglass Number", "hourglass"]
+
+]
+
+};
+
+
+/* =====================================================
+   CHALLENGE DATA
+===================================================== */
+
+
+const challenges = {
+
+rightStar: {
+
+question:
+"Which expression should replace the blank so that row i prints i stars?",
+
+code:
+`for(i = 1; i <= n; i++) {
+
+    for(j = 1; j <= ______; j++) {
+
+        printf("*");
+
+    }
+
+    printf("\\n");
+}`,
+
+answers: ["i"],
+
+hint:
+"The number of stars in row 1 is 1, row 2 is 2, row 3 is 3..."
+
+},
+
+invertedStar: {
+
+question:
+"Which expression should replace the blank?",
+
+code:
+`for(i = n; i >= 1; i--) {
+
+    for(j = 1; j <= ______; j++) {
+
+        printf("*");
+
+    }
+
+    printf("\\n");
+}`,
+
+answers: ["i"],
+
+hint:
+"The number of stars starts from n and decreases."
+
+},
+
+numberTriangle: {
+
+question:
+"Which expression should replace the blank?",
+
+code:
+`for(i = 1; i <= n; i++) {
+
+    for(j = 1; j <= ______; j++) {
+
+        printf("%d", j);
+
+    }
+
+    printf("\\n");
+}`,
+
+answers: ["i"],
+
+hint:
+"Row i contains i numbers."
+
+},
+
+repeatedNumber: {
+
+question:
+"Which expression should be printed to repeat the row number?",
+
+code:
+`for(i = 1; i <= n; i++) {
+
+    for(j = 1; j <= i; j++) {
+
+        printf("%d", ______);
+
+    }
+
+    printf("\\n");
+}`,
+
+answers: ["i"],
+
+hint:
+"Every element in a row is the same as the row number."
+
+},
+
+alphabetTriangle: {
+
+question:
+"Which expression generates A, B, C, D... using ASCII?",
+
+code:
+`for(i = 0; i < n; i++) {
+
+    for(j = 0; j <= i; j++) {
+
+        printf("%c", ______);
+
+    }
+
+    printf("\\n");
+}`,
+
+answers: ["65 + j", "'A' + j"],
+
+hint:
+"The ASCII value of A is 65."
+
+},
+
+repeatedAlphabet: {
+
+question:
+"Which expression prints the same alphabet throughout a row?",
+
+code:
+`for(i = 0; i < n; i++) {
+
+    for(j = 0; j <= i; j++) {
+
+        printf("%c", ______);
+
+    }
+
+    printf("\\n");
+}`,
+
+answers: ["65 + i", "'A' + i"],
+
+hint:
+"The character changes with the row, not with the column."
+
+},
+
+rightAligned: {
+
+question:
+"How many spaces should be printed before the stars?",
+
+code:
+`for(i = 1; i <= n; i++) {
+
+    for(j = 1; j <= ______; j++)
+        printf(" ");
+
+    for(j = 1; j <= i; j++)
+        printf("*");
+
+}`,
+
+answers: ["n-i", "n - i"],
+
+hint:
+"Spaces decrease as i increases."
+
+},
+
+pyramid: {
+
+question:
+"How many stars should be printed in row i?",
+
+code:
+`for(i = 1; i <= n; i++) {
+
+    for(j = 1; j <= 2*i-1; j++)
+        printf("*");
+
+}`,
+
+answers: ["2*i-1", "2 * i - 1", "2*i - 1"],
+
+hint:
+"Rows contain 1, 3, 5, 7... stars."
+
+},
+
+hollowSquare: {
+
+question:
+"What condition identifies the boundary of a square?",
+
+code:
+`if( ______________________________ )
+    printf("*");
+else
+    printf(" ");`,
+
+answers: [
+
+"i==1 || i==n || j==1 || j==n",
+
+"i == 1 || i == n || j == 1 || j == n"
+
+],
+
+hint:
+"Think about top, bottom, left and right boundaries."
+
+},
+
+xPattern: {
+
+question:
+"What condition produces the two diagonals of an X?",
+
+code:
+`if( ______________________________ )
+    printf("*");
+else
+    printf(" ");`,
+
+answers: [
+
+"j==i || j==n-i+1",
+
+"j == i || j == n-i+1",
+
+"j==i || j==n-i+1"
+
+],
+
+hint:
+"One diagonal follows j=i. Find the condition for the other."
+
+},
+
+plusPattern: {
+
+question:
+"Which condition prints the middle row or middle column?",
+
+code:
+`int mid = (n+1)/2;
+
+if( __________________ )
+    printf("*");`,
+
+answers: [
+
+"i==mid || j==mid",
+
+"i == mid || j == mid"
+
+],
+
+hint:
+"A plus sign consists of one horizontal and one vertical line."
+
+},
+
+continuousNumber: {
+
+question:
+"Which variable should be printed to continue numbers across rows?",
+
+code:
+`int num = 1;
+
+for(i = 1; i <= n; i++) {
+
+    for(j = 1; j <= i; j++) {
+
+        printf("%d", ______);
+
+        num++;
+
+    }
+
+}`,
+
+answers: ["num"],
+
+hint:
+"Use one variable that is not reset for every row."
+
+},
+
+zeroOne: {
+
+question:
+"Which expression creates alternating 0 and 1?",
+
+code:
+`for(i = 1; i <= n; i++) {
+
+    for(j = 1; j <= i; j++) {
+
+        printf("%d", ______);
+
+    }
+
+}`,
+
+answers: ["(i+j)%2", "(i + j) % 2"],
+
+hint:
+"Use the modulo operator."
+
+},
+
+floyd: {
+
+question:
+"Which expression prints the continuously increasing number?",
+
+code:
+`int num = 1;
+
+for(i = 1; i <= n; i++) {
+
+    for(j = 1; j <= i; j++) {
+
+        printf("%d ", ______);
+
+        num++;
+
+    }
+
+}`,
+
+answers: ["num"],
+
+hint:
+"Floyd's Triangle uses a continuously increasing variable."
+
+}
+
+};
+
+
+/* =====================================================
+   LOAD PATTERNS
+===================================================== */
+
+
+function loadPatterns() {
+
+const level =
+document.getElementById("level").value;
+
+const select =
+document.getElementById("pattern");
+
+select.innerHTML = "";
+
+patterns[level].forEach(item => {
+
+const option =
+document.createElement("option");
+
+option.value = item[1];
+
+option.textContent = item[0];
+
+select.appendChild(option);
+
+});
+
+generatePattern();
+
+}
+
+
+/* =====================================================
+   GENERATE PATTERN
+===================================================== */
+
+
+function generatePattern() {
+
+const pattern =
+document.getElementById("pattern").value;
+
+const n =
+parseInt(document.getElementById("rows").value);
+
+const symbol =
+document.getElementById("symbol").value || "*";
+
+const startChar =
+document.getElementById("startChar").value || "A";
+
+let output = "";
+
+let code = "";
+
+let explanation = "";
+
+
+/* ================= BASIC ================= */
+
+
+if(pattern === "rightStar") {
+
+for(let i=1;i<=n;i++)
+output += symbol.repeat(i) + "\n";
+
+code =
+`#include <stdio.h>
+
+int main() {
+
+    int i, j;
+    int n = ${n};
+
+    for(i = 1; i <= n; i++) {
+
+        for(j = 1; j <= i; j++)
+            printf("${symbol}");
+
+        printf("\\n");
+    }
+
+    return 0;
+}`;
+
+explanation =
+"Outer loop controls the rows. Inner loop prints i symbols.";
+
+}
+
+
+else if(pattern === "invertedStar") {
+
+for(let i=n;i>=1;i--)
+output += symbol.repeat(i) + "\n";
+
+code =
+`#include <stdio.h>
+
+int main() {
+
+    int i, j;
+    int n = ${n};
+
+    for(i = n; i >= 1; i--) {
+
+        for(j = 1; j <= i; j++)
+            printf("${symbol}");
+
+        printf("\\n");
+    }
+
+    return 0;
+}`;
+
+explanation =
+"The number of symbols decreases from n to 1.";
+
+}
+
+
+else if(pattern === "numberTriangle") {
+
+for(let i=1;i<=n;i++) {
+
+for(let j=1;j<=i;j++)
+output += j;
+
+output += "\n";
+
+}
+
+code =
+`#include <stdio.h>
+
+int main() {
+
+    int i, j;
+    int n = ${n};
+
+    for(i = 1; i <= n; i++) {
+
+        for(j = 1; j <= i; j++)
+            printf("%d", j);
+
+        printf("\\n");
+    }
+
+    return 0;
+}`;
+
+explanation =
+"Row i contains the numbers from 1 to i.";
+
+}
+
+
+else if(pattern === "repeatedNumber") {
+
+for(let i=1;i<=n;i++)
+output += String(i).repeat(i) + "\n";
+
+code =
+`#include <stdio.h>
+
+int main() {
+
+    int i, j;
+    int n = ${n};
+
+    for(i = 1; i <= n; i++) {
+
+        for(j = 1; j <= i; j++)
+            printf("%d", i);
+
+        printf("\\n");
+    }
+
+    return 0;
+}`;
+
+explanation =
+"The row number is printed repeatedly.";
+
+}
+
+
+else if(pattern === "alphabetTriangle") {
+
+let start =
+startChar.charCodeAt(0);
+
+for(let i=0;i<n;i++) {
+
+for(let j=0;j<=i;j++)
+output += String.fromCharCode(start+j);
+
+output += "\n";
+
+}
+
+code =
+`#include <stdio.h>
+
+int main() {
+
+    int i, j;
+    int n = ${n};
+
+    for(i = 0; i < n; i++) {
+
+        for(j = 0; j <= i; j++)
+            printf("%c", ${start} + j);
+
+        printf("\\n");
+    }
+
+    return 0;
+}`;
+
+explanation =
+"Characters are generated using their ASCII values. A = 65, B = 66, C = 67...";
+
+}
+
+
+else if(pattern === "repeatedAlphabet") {
+
+let start =
+startChar.charCodeAt(0);
+
+for(let i=0;i<n;i++) {
+
+output +=
+String.fromCharCode(start+i).repeat(i+1);
+
+output += "\n";
+
+}
+
+code =
+`#include <stdio.h>
+
+int main() {
+
+    int i, j;
+    int n = ${n};
+
+    for(i = 0; i < n; i++) {
+
+        for(j = 0; j <= i; j++)
+            printf("%c", ${start} + i);
+
+        printf("\\n");
+    }
+
+    return 0;
+}`;
+
+explanation =
+"Each row contains one repeated character. The ASCII value changes with i.";
+
+}
+
+
+/* ================= PYRAMIDS ================= */
+
+
+else if(pattern === "rightAligned") {
+
+for(let i=1;i<=n;i++)
+output +=
+" ".repeat(n-i) +
+symbol.repeat(i) +
+"\n";
+
+code =
+`#include <stdio.h>
+
+int main() {
+
+    int i, j;
+    int n = ${n};
+
+    for(i = 1; i <= n; i++) {
+
+        for(j = 1; j <= n-i; j++)
+            printf(" ");
+
+        for(j = 1; j <= i; j++)
+            printf("${symbol}");
+
+        printf("\\n");
+    }
+
+    return 0;
+}`;
+
+explanation =
+"Spaces decrease while symbols increase.";
+
+}
+
+
+else if(pattern === "invertedRightAligned") {
+
+for(let i=n;i>=1;i--)
+output +=
+" ".repeat(n-i) +
+symbol.repeat(i) +
+"\n";
+
+code =
+`#include <stdio.h>
+
+int main() {
+
+    int i, j;
+    int n = ${n};
+
+    for(i = n; i >= 1; i--) {
+
+        for(j = 1; j <= n-i; j++)
+            printf(" ");
+
+        for(j = 1; j <= i; j++)
+            printf("${symbol}");
+
+        printf("\\n");
+    }
+
+    return 0;
+}`;
+
+explanation =
+"Spaces increase and symbols decrease.";
+
+}
+
+
+else if(pattern === "pyramid") {
+
+for(let i=1;i<=n;i++)
+output +=
+" ".repeat(n-i) +
+symbol.repeat(2*i-1) +
+"\n";
+
+code =
+`#include <stdio.h>
+
+int main() {
+
+    int i, j;
+    int n = ${n};
+
+    for(i = 1; i <= n; i++) {
+
+        for(j = 1; j <= n-i; j++)
+            printf(" ");
+
+        for(j = 1; j <= 2*i-1; j++)
+            printf("${symbol}");
+
+        printf("\\n");
+    }
+
+    return 0;
+}`;
+
+explanation =
+"Row i has n-i spaces and 2*i-1 symbols.";
+
+}
+
+
+else if(pattern === "invertedPyramid") {
+
+for(let i=n;i>=1;i--)
+output +=
+" ".repeat(n-i) +
+symbol.repeat(2*i-1) +
+"\n";
+
+code =
+`#include <stdio.h>
+
+int main() {
+
+    int i, j;
+    int n = ${n};
+
+    for(i = n; i >= 1; i--) {
+
+        for(j = 1; j <= n-i; j++)
+            printf(" ");
+
+        for(j = 1; j <= 2*i-1; j++)
+            printf("${symbol}");
+
+        printf("\\n");
+    }
+
+    return 0;
+}`;
+
+explanation =
+"The pyramid is printed from the largest row to the smallest.";
+
+}
+
+
+else if(pattern === "numberPyramid") {
+
+for(let i=1;i<=n;i++) {
+
+output += " ".repeat(n-i);
+
+for(let j=1;j<=2*i-1;j++)
+output += j;
+
+output += "\n";
+
+}
+
+code =
+`#include <stdio.h>
+
+int main() {
+
+    int i, j;
+    int n = ${n};
+
+    for(i = 1; i <= n; i++) {
+
+        for(j = 1; j <= n-i; j++)
+            printf(" ");
+
+        for(j = 1; j <= 2*i-1; j++)
+            printf("%d", j);
+
+        printf("\\n");
+    }
+
+    return 0;
+}`;
+
+explanation =
+"The number of elements increases by two in every row.";
+
+}
+
+
+else if(pattern === "repeatedNumberPyramid") {
+
+for(let i=1;i<=n;i++)
+output +=
+" ".repeat(n-i) +
+String(i).repeat(2*i-1) +
+"\n";
+
+code =
+`#include <stdio.h>
+
+int main() {
+
+    int i, j;
+    int n = ${n};
+
+    for(i = 1; i <= n; i++) {
+
+        for(j = 1; j <= n-i; j++)
+            printf(" ");
+
+        for(j = 1; j <= 2*i-1; j++)
+            printf("%d", i);
+
+        printf("\\n");
+    }
+
+    return 0;
+}`;
+
+explanation =
+"Row number i is repeated 2*i-1 times.";
+
+}
+
+
+/* ================= SHAPES ================= */
+
+
+else if(pattern === "diamond") {
+
+for(let i=1;i<=n;i++)
+output +=
+" ".repeat(n-i) +
+symbol.repeat(2*i-1) +
+"\n";
+
+for(let i=n-1;i>=1;i--)
+output +=
+" ".repeat(n-i) +
+symbol.repeat(2*i-1) +
+"\n";
+
+code =
+`#include <stdio.h>
+
+int main() {
+
+    int i, j;
+    int n = ${n};
+
+    for(i = 1; i <= n; i++) {
+
+        for(j = 1; j <= n-i; j++)
+            printf(" ");
+
+        for(j = 1; j <= 2*i-1; j++)
+            printf("${symbol}");
+
+        printf("\\n");
+    }
+
+    for(i = n-1; i >= 1; i--) {
+
+        for(j = 1; j <= n-i; j++)
+            printf(" ");
+
+        for(j = 1; j <= 2*i-1; j++)
+            printf("${symbol}");
+
+        printf("\\n");
+    }
+
+    return 0;
+}`;
+
+explanation =
+"A diamond combines an increasing pyramid and a decreasing pyramid.";
+
+}
+
+
+else if(pattern === "hollowSquare") {
+
+for(let i=1;i<=n;i++) {
+
+for(let j=1;j<=n;j++) {
+
+if(
+i===1 ||
+i===n ||
+j===1 ||
+j===n
+)
+output += symbol;
+else
+output += " ";
+
+}
+
+output += "\n";
+
+}
+
+code =
+`#include <stdio.h>
+
+int main() {
+
+    int i, j;
+    int n = ${n};
+
+    for(i = 1; i <= n; i++) {
+
+        for(j = 1; j <= n; j++) {
+
+            if(i == 1 || i == n ||
+               j == 1 || j == n)
+                printf("${symbol}");
+            else
+                printf(" ");
+        }
+
+        printf("\\n");
+    }
+
+    return 0;
+}`;
+
+explanation =
+"Print the symbol only on the top, bottom, left and right boundaries.";
+
+}
+
+
+else if(pattern === "hollowTriangle") {
+
+for(let i=1;i<=n;i++) {
+
+for(let j=1;j<=i;j++) {
+
+if(
+j===1 ||
+j===i ||
+i===n
+)
+output += symbol;
+else
+output += " ";
+
+}
+
+output += "\n";
+
+}
+
+code =
+`#include <stdio.h>
+
+int main() {
+
+    int i, j;
+    int n = ${n};
+
+    for(i = 1; i <= n; i++) {
+
+        for(j = 1; j <= i; j++) {
+
+            if(j == 1 || j == i || i == n)
+                printf("${symbol}");
+            else
+                printf(" ");
+        }
+
+        printf("\\n");
+    }
+
+    return 0;
+}`;
+
+explanation =
+"The left edge, right edge and bottom edge are printed.";
+
+}
+
+
+else if(pattern === "hollowPyramid") {
+
+for(let i=1;i<=n;i++) {
+
+output += " ".repeat(n-i);
+
+for(let j=1;j<=2*i-1;j++) {
+
+if(
+j===1 ||
+j===2*i-1 ||
+i===n
+)
+output += symbol;
+else
+output += " ";
+
+}
+
+output += "\n";
+
+}
+
+code =
+`#include <stdio.h>
+
+int main() {
+
+    int i, j;
+    int n = ${n};
+
+    for(i = 1; i <= n; i++) {
+
+        for(j = 1; j <= n-i; j++)
+            printf(" ");
+
+        for(j = 1; j <= 2*i-1; j++) {
+
+            if(j == 1 ||
+               j == 2*i-1 ||
+               i == n)
+                printf("${symbol}");
+            else
+                printf(" ");
+        }
+
+        printf("\\n");
+    }
+
+    return 0;
+}`;
+
+explanation =
+"Only the boundary of the pyramid is printed.";
+
+}
+
+
+else if(pattern === "xPattern") {
+
+for(let i=1;i<=n;i++) {
+
+for(let j=1;j<=n;j++) {
+
+if(
+j===i ||
+j===n-i+1
+)
+output += symbol;
+else
+output += " ";
+
+}
+
+output += "\n";
+
+}
+
+code =
+`#include <stdio.h>
+
+int main() {
+
+    int i, j;
+    int n = ${n};
+
+    for(i = 1; i <= n; i++) {
+
+        for(j = 1; j <= n; j++) {
+
+            if(j == i || j == n-i+1)
+                printf("${symbol}");
+            else
+                printf(" ");
+        }
+
+        printf("\\n");
+    }
+
+    return 0;
+}`;
+
+explanation =
+"The two diagonals form the X.";
+
+}
+
+
+else if(pattern === "plusPattern") {
+
+let mid =
+Math.ceil(n/2);
+
+for(let i=1;i<=n;i++) {
+
+for(let j=1;j<=n;j++) {
+
+if(i===mid || j===mid)
+output += symbol;
+else
+output += " ";
+
+}
+
+output += "\n";
+
+}
+
+code =
+`#include <stdio.h>
+
+int main() {
+
+    int i, j;
+    int n = ${n};
+    int mid = (n+1)/2;
+
+    for(i = 1; i <= n; i++) {
+
+        for(j = 1; j <= n; j++) {
+
+            if(i == mid || j == mid)
+                printf("${symbol}");
+            else
+                printf(" ");
+        }
+
+        printf("\\n");
+    }
+
+    return 0;
+}`;
+
+explanation =
+"The middle row and middle column form the plus sign.";
+
+}
+
+
+/* ================= NUMBER PATTERNS ================= */
+
+
+else if(pattern === "continuousNumber") {
+
+let num=1;
+
+for(let i=1;i<=n;i++) {
+
+for(let j=1;j<=i;j++)
+output += num++;
+
+output += "\n";
+
+}
+
+code =
+`#include <stdio.h>
+
+int main() {
+
+    int i, j;
+    int n = ${n};
+    int num = 1;
+
+    for(i = 1; i <= n; i++) {
+
+        for(j = 1; j <= i; j++)
+            printf("%d", num++);
+
+        printf("\\n");
+    }
+
+    return 0;
+}`;
+
+explanation =
+"A single variable continues increasing across all rows.";
+
+}
+
+
+else if(pattern === "floyd") {
+
+let num=1;
+
+for(let i=1;i<=n;i++) {
+
+for(let j=1;j<=i;j++)
+output += num++ + " ";
+
+output += "\n";
+
+}
+
+code =
+`#include <stdio.h>
+
+int main() {
+
+    int i, j;
+    int n = ${n};
+    int num = 1;
+
+    for(i = 1; i <= n; i++) {
+
+        for(j = 1; j <= i; j++)
+            printf("%d ", num++);
+
+        printf("\\n");
+    }
+
+    return 0;
+}`;
+
+explanation =
+"Floyd's Triangle uses one continuously increasing variable.";
+
+}
+
+
+else if(pattern === "reverseNumber") {
+
+for(let i=n;i>=1;i--) {
+
+for(let j=1;j<=i;j++)
+output += j;
+
+output += "\n";
+
+}
+
+code =
+`#include <stdio.h>
+
+int main() {
+
+    int i, j;
+    int n = ${n};
+
+    for(i = n; i >= 1; i--) {
+
+        for(j = 1; j <= i; j++)
+            printf("%d", j);
+
+        printf("\\n");
+    }
+
+    return 0;
+}`;
+
+explanation =
+"The number of elements decreases from n to 1.";
+
+}
+
+
+else if(pattern === "palindrome") {
+
+for(let i=1;i<=n;i++) {
+
+output += " ".repeat(n-i);
+
+for(let j=1;j<=i;j++)
+output += j;
+
+for(let j=i-1;j>=1;j--)
+output += j;
+
+output += "\n";
+
+}
+
+code =
+`#include <stdio.h>
+
+int main() {
+
+    int i, j;
+    int n = ${n};
+
+    for(i = 1; i <= n; i++) {
+
+        for(j = 1; j <= n-i; j++)
+            printf(" ");
+
+        for(j = 1; j <= i; j++)
+            printf("%d", j);
+
+        for(j = i-1; j >= 1; j--)
+            printf("%d", j);
+
+        printf("\\n");
+    }
+
+    return 0;
+}`;
+
+explanation =
+"The second half is the reverse of the first half.";
+
+}
+
+
+else if(pattern === "repeatedDigitPyramid") {
+
+for(let i=1;i<=n;i++)
+output +=
+" ".repeat(n-i) +
+String(i).repeat(2*i-1) +
+"\n";
+
+code =
+`#include <stdio.h>
+
+int main() {
+
+    int i, j;
+    int n = ${n};
+
+    for(i = 1; i <= n; i++) {
+
+        for(j = 1; j <= n-i; j++)
+            printf(" ");
+
+        for(j = 1; j <= 2*i-1; j++)
+            printf("%d", i);
+
+        printf("\\n");
+    }
+
+    return 0;
+}`;
+
+explanation =
+"Each row repeats the same digit in pyramid form.";
+
+}
+
+
+/* ================= ADVANCED ================= */
+
+
+else if(pattern === "butterfly") {
+
+for(let i=1;i<=n;i++) {
+
+output +=
+symbol.repeat(i) +
+" ".repeat(2*(n-i)) +
+symbol.repeat(i) +
+"\n";
+
+}
+
+for(let i=n;i>=1;i--) {
+
+output +=
+symbol.repeat(i) +
+" ".repeat(2*(n-i)) +
+symbol.repeat(i) +
+"\n";
+
+}
+
+code =
+`#include <stdio.h>
+
+int main() {
+
+    int i, j;
+    int n = ${n};
+
+    for(i = 1; i <= n; i++) {
+
+        for(j = 1; j <= i; j++)
+            printf("${symbol}");
+
+        for(j = 1; j <= 2*(n-i); j++)
+            printf(" ");
+
+        for(j = 1; j <= i; j++)
+            printf("${symbol}");
+
+        printf("\\n");
+    }
+
+    for(i = n; i >= 1; i--) {
+
+        for(j = 1; j <= i; j++)
+            printf("${symbol}");
+
+        for(j = 1; j <= 2*(n-i); j++)
+            printf(" ");
+
+        for(j = 1; j <= i; j++)
+            printf("${symbol}");
+
+        printf("\\n");
+    }
+
+    return 0;
+}`;
+
+explanation =
+"The butterfly is formed using two mirrored triangles.";
+
+}
+
+
+else if(pattern === "hollowDiamond") {
+
+for(let i=1;i<=n;i++) {
+
+output += " ".repeat(n-i);
+
+for(let j=1;j<=2*i-1;j++) {
+
+if(j===1 || j===2*i-1)
+output += symbol;
+else
+output += " ";
+
+}
+
+output += "\n";
+
+}
+
+for(let i=n-1;i>=1;i--) {
+
+output += " ".repeat(n-i);
+
+for(let j=1;j<=2*i-1;j++) {
+
+if(j===1 || j===2*i-1)
+output += symbol;
+else
+output += " ";
+
+}
+
+output += "\n";
+
+}
+
+code =
+`#include <stdio.h>
+
+int main() {
+
+    int i, j;
+    int n = ${n};
+
+    for(i = 1; i <= n; i++) {
+
+        for(j = 1; j <= n-i; j++)
+            printf(" ");
+
+        for(j = 1; j <= 2*i-1; j++) {
+
+            if(j == 1 || j == 2*i-1)
+                printf("${symbol}");
+            else
+                printf(" ");
+        }
+
+        printf("\\n");
+    }
+
+    for(i = n-1; i >= 1; i--) {
+
+        for(j = 1; j <= n-i; j++)
+            printf(" ");
+
+        for(j = 1; j <= 2*i-1; j++) {
+
+            if(j == 1 || j == 2*i-1)
+                printf("${symbol}");
+            else
+                printf(" ");
+        }
+
+        printf("\\n");
+    }
+
+    return 0;
+}`;
+
+explanation =
+"Only the boundary of the diamond is printed.";
+
+}
+
+
+else if(pattern === "pascal") {
+
+for(let i=0;i<n;i++) {
+
+output += " ".repeat(n-i);
+
+let value=1;
+
+for(let j=0;j<=i;j++) {
+
+output += value + " ";
+
+value =
+value * (i-j) / (j+1);
+
+}
+
+output += "\n";
+
+}
+
+code =
+`#include <stdio.h>
+
+int main() {
+
+    int i, j;
+    int n = ${n};
+    int value;
+
+    for(i = 0; i < n; i++) {
+
+        for(j = 0; j < n-i; j++)
+            printf(" ");
+
+        value = 1;
+
+        for(j = 0; j <= i; j++) {
+
+            printf("%d ", value);
+
+            value =
+            value * (i-j) / (j+1);
+        }
+
+        printf("\\n");
+    }
+
+    return 0;
+}`;
+
+explanation =
+"Each value is calculated from the previous value.";
+
+}
+
+
+else if(pattern === "zeroOne") {
+
+for(let i=1;i<=n;i++) {
+
+for(let j=1;j<=i;j++)
+output += (i+j)%2;
+
+output += "\n";
+
+}
+
+code =
+`#include <stdio.h>
+
+int main() {
+
+    int i, j;
+    int n = ${n};
+
+    for(i = 1; i <= n; i++) {
+
+        for(j = 1; j <= i; j++)
+            printf("%d", (i+j)%2);
+
+        printf("\\n");
+    }
+
+    return 0;
+}`;
+
+explanation =
+"The modulo operator creates the alternating 0 and 1.";
+
+}
+
+
+else if(pattern === "checkerboard") {
+
+for(let i=1;i<=n;i++) {
+
+for(let j=1;j<=n;j++) {
+
+if((i+j)%2===0)
+output += symbol;
+else
+output += " ";
+
+}
+
+output += "\n";
+
+}
+
+code =
+`#include <stdio.h>
+
+int main() {
+
+    int i, j;
+    int n = ${n};
+
+    for(i = 1; i <= n; i++) {
+
+        for(j = 1; j <= n; j++) {
+
+            if((i+j)%2 == 0)
+                printf("${symbol}");
+            else
+                printf(" ");
+        }
+
+        printf("\\n");
+    }
+
+    return 0;
+}`;
+
+explanation =
+"The condition (i+j)%2 determines the alternating cells.";
+
+}
+
+
+else if(pattern === "sandglass") {
+
+for(let i=n;i>=1;i--)
+output +=
+" ".repeat(n-i) +
+symbol.repeat(2*i-1) +
+"\n";
+
+for(let i=2;i<=n;i++)
+output +=
+" ".repeat(n-i) +
+symbol.repeat(2*i-1) +
+"\n";
+
+code =
+`#include <stdio.h>
+
+int main() {
+
+    int i, j;
+    int n = ${n};
+
+    for(i = n; i >= 1; i--) {
+
+        for(j = 1; j <= n-i; j++)
+            printf(" ");
+
+        for(j = 1; j <= 2*i-1; j++)
+            printf("${symbol}");
+
+        printf("\\n");
+    }
+
+    for(i = 2; i <= n; i++) {
+
+        for(j = 1; j <= n-i; j++)
+            printf(" ");
+
+        for(j = 1; j <= 2*i-1; j++)
+            printf("${symbol}");
+
+        printf("\\n");
+    }
+
+    return 0;
+}`;
+
+explanation =
+"An inverted pyramid is followed by a normal pyramid.";
+
+}
+
+
+else if(pattern === "hourglass") {
+
+for(let i=0;i<n;i++) {
+
+output += " ".repeat(i);
+
+for(let j=i+1;j<=n;j++)
+output += j;
+
+output += "\n";
+
+}
+
+for(let i=n-2;i>=0;i--) {
+
+output += " ".repeat(i);
+
+for(let j=i+1;j<=n;j++)
+output += j;
+
+output += "\n";
+
+}
+
+code =
+`#include <stdio.h>
+
+int main() {
+
+    int i, j;
+    int n = ${n};
+
+    for(i = 0; i < n; i++) {
+
+        for(j = 0; j < i; j++)
+            printf(" ");
+
+        for(j = i+1; j <= n; j++)
+            printf("%d", j);
+
+        printf("\\n");
+    }
+
+    for(i = n-2; i >= 0; i--) {
+
+        for(j = 0; j < i; j++)
+            printf(" ");
+
+        for(j = i+1; j <= n; j++)
+            printf("%d", j);
+
+        printf("\\n");
+    }
+
+    return 0;
+}`;
+
+explanation =
+"The pattern decreases toward the middle and then increases.";
+
+}
+
+
+/* =====================================================
+   DISPLAY
+===================================================== */
+
+
+document.getElementById("output").textContent =
+output;
+
+document.getElementById("code").textContent =
+code;
+
+document.getElementById("explanation").textContent =
+explanation;
+
+showUniqueASCII(output);
+
+}
+
+
+/* =====================================================
+   UNIQUE ASCII
+===================================================== */
+
+
+function showUniqueASCII(output) {
+
+const chars = new Set();
+
+for(const char of output) {
+
+if(char !== " " && char !== "\n")
+chars.add(char);
+
+}
+
+let result = "";
+
+chars.forEach(char => {
+
+result +=
+char + " → " + char.charCodeAt(0) + "\n";
+
+});
+
+if(result === "")
+result = "No ASCII values.";
+
+document.getElementById("ascii").textContent =
+result;
+
+}
+
+
+/* =====================================================
+   COPY CODE
+===================================================== */
+
+
+function copyCode() {
+
+const code =
+document.getElementById("code").textContent;
+
+navigator.clipboard.writeText(code);
+
+alert("C code copied successfully!");
+
+}
+
+
+/* =====================================================
+   CHALLENGE VARIABLES
+===================================================== */
+
+
+let score = 0;
+
+let currentChallenge = null;
+
+
+/* =====================================================
+   START CHALLENGE
+===================================================== */
+
+
+function startPractice() {
+
+    const pattern =
+        document.getElementById("pattern").value;
+
+    if (!challenges[pattern]) {
+
+        alert(
+            "Practice is not available for this pattern yet."
+        );
+
+        return;
+    }
+
+    document
+        .getElementById("challengeCard")
+        .classList.remove("hidden");
+
+    currentChallenge =
+        challenges[pattern];
+
+    document
+        .getElementById("challengeQuestion")
+        .textContent =
+        currentChallenge.question;
+
+    document
+        .getElementById("challengeCode")
+        .textContent =
+        currentChallenge.code;
+
+    document
+        .getElementById("answerInput")
+        .value = "";
+
+    document
+        .getElementById("result")
+        .innerHTML = "";
+
+    document
+        .getElementById("hint")
+        .classList.add("hidden");
+
+    /*
+       Automatically move to
+       Student Practice section
+    */
+
+    setTimeout(function() {
+
+        document
+            .getElementById("challengeCard")
+            .scrollIntoView({
+                behavior: "smooth",
+                block: "start"
+            });
+
+    }, 100);
+
+}
+
+
+/* =====================================================
+   CHECK ANSWER
+===================================================== */
+
+
+function checkAnswer() {
+
+if(!currentChallenge)
+return;
+
+const userAnswer =
+document
+.getElementById("answerInput")
+.value
+.trim()
+.replace(/\s+/g,"");
+
+const valid =
+currentChallenge.answers.some(answer =>
+
+answer
+.trim()
+.replace(/\s+/g,"") === userAnswer
+
+);
+
+
+const result =
+document.getElementById("result");
+
+
+if(valid) {
+
+score++;
+
+document.getElementById("score")
+.textContent = score;
+
+result.className =
+"result correct";
+
+result.textContent =
+"✅ Correct! Excellent work.";
+
+}
+
+else {
+
+result.className =
+"result wrong";
+
+result.textContent =
+"❌ Not correct. Try again or use the hint.";
+
+}
+
+}
+
+
+/* =====================================================
+   HINT
+===================================================== */
+
+
+function showHint() {
+
+if(!currentChallenge)
+return;
+
+const hint =
+document.getElementById("hint");
+
+hint.textContent =
+"💡 Hint: " +
+currentChallenge.hint;
+
+hint.classList.remove("hidden");
+
+}
+
+
+/* =====================================================
+   NEXT CHALLENGE
+===================================================== */
+
+
+function nextChallenge() {
+
+const available =
+Object.keys(challenges);
+
+const randomPattern =
+available[
+Math.floor(
+Math.random() * available.length
+)
+];
+
+currentChallenge =
+challenges[randomPattern];
+
+document
+.getElementById("challengeQuestion")
+.textContent =
+currentChallenge.question;
+
+document
+.getElementById("challengeCode")
+.textContent =
+currentChallenge.code;
+
+document
+.getElementById("answerInput")
+.value = "";
+
+document
+.getElementById("result")
+.innerHTML = "";
+
+document
+.getElementById("hint")
+.classList.add("hidden");
+
+}
+
+
+/* =====================================================
+   RESET
+===================================================== */
+
+
+function resetPage() {
+
+document.getElementById("level")
+.value = "1";
+
+document.getElementById("rows")
+.value = 5;
+
+document.getElementById("symbol")
+.value = "*";
+
+document.getElementById("startChar")
+.value = "A";
+
+score = 0;
+
+document.getElementById("score")
+.textContent = "0";
+
+document
+.getElementById("challengeCard")
+.classList.add("hidden");
+
+loadPatterns();
+
+}
+
+
+/* =====================================================
+   START PAGE
+===================================================== */
+
+
+loadPatterns();
+
+</script>
+
+</body>
+
+</html>
